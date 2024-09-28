@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MapContainer, Circle, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import { useData } from "@context/DataContext";
 import { useUser } from "@context/UserContext";
 import moment from "moment";
@@ -27,18 +25,16 @@ const deg2rad = (deg) => {
 };
 
 const Stadium = () => {
-  const { getStadium } = useData();
-  const { userLocation } = useUser();
+  const dataContext = useData();
+  const userContext = useUser();
+
+  if (!dataContext || !userContext) return null;
+
+  const { getStadium } = dataContext;
+  const { userLocation } = userContext;
 
   const [stadiums, setStadiums] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const locations = [
-    [40.684, -73.965],
-    [40.688, -73.97],
-    [40.691, -73.96],
-    [40.695, -73.95],
-  ];
 
   useEffect(() => {
     const fetchStadiums = async () => {
@@ -57,31 +53,6 @@ const Stadium = () => {
 
   return (
     <div className="flex h-full gap-10">
-      <div className="flex-1 hidden md:block">
-        <MapContainer
-          className="flex-1 h-full w-full opacity-70 rounded-lg shadow"
-          style={{
-            userSelect: "none",
-          }}
-          center={[40.684, -73.965]}
-          zoom={14}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          {locations.map((location, idx) => (
-            <Circle
-              key={idx}
-              center={location}
-              radius={50} // Adjust the radius as needed
-              color="purple"
-              fillColor="purple"
-              fillOpacity={1}
-            />
-          ))}
-        </MapContainer>
-      </div>
       <div className="w-full md:w-72">
         <h1 className="font-bold text-lg mb-6">
           {stadiums.length} Stadium's Around You

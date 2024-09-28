@@ -15,7 +15,10 @@ const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const searchParams = useSearchParams();
-  const { login, register, loginWithGoogle } = useUser();
+
+  const userContext = useUser();
+  if (!userContext) return null;
+  const { login, register, loginWithGoogle } = userContext;
 
   const handleGoogleLogin = async () => {
     try {

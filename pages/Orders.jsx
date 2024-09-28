@@ -20,7 +20,7 @@ const Orders = () => {
   const userContext = useUser();
   const dataContext = useData();
 
-  if (!modalContext || !userContext || !dataContext) null;
+  if (!modalContext || !userContext || !dataContext) return null;
 
   const { openModal, closeModal } = modalContext;
   const { getOrders, socket } = userContext;
