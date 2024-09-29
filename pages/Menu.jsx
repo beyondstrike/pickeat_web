@@ -72,7 +72,6 @@ const Menu = ({ stadiumID }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mt-6">
         {filteredMenu.map((menu) => {
-          console.log(menu);
           return (
             <div
               key={menu._id}

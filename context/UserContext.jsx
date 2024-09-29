@@ -241,7 +241,6 @@ const UserContext = ({ children }) => {
         cart.push(...data);
       }
 
-      console.log(cart);
       setCart(cart);
     } catch (error) {
       console.error("Error getting cart items", error);
@@ -358,7 +357,6 @@ const UserContext = ({ children }) => {
 
   const removeCard = async (paymentMethodId) => {
     try {
-      console.log(paymentMethodId);
       await api.delete(`/auth/card/${paymentMethodId}`);
     } catch (error) {
       console.error("Error removing card", error);

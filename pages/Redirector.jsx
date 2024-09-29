@@ -17,7 +17,8 @@ const Redirector = ({ stadium_name }) => {
 
       const stadium_match = stadiums.find(
         (stadium) =>
-          stadium.title.toLowerCase().replaceAll(" ", "-") === stadium_name
+          stadium.title.toLowerCase().replaceAll(" ", "-") === stadium_name ||
+          stadium.identifier === stadium_name
       );
 
       if (stadium_match) {
