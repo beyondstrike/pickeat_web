@@ -14,7 +14,6 @@ const Menu = ({ stadiumID }) => {
   if (!modalContext || !dataContext || !userContext) return null;
   const { openModal } = modalContext;
   const { getMenuItems, currencies } = dataContext;
-  const { cart } = userContext;
 
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
@@ -80,11 +79,11 @@ const Menu = ({ stadiumID }) => {
               className="flex flex-row md:flex-col items-start justify-center bg-white p-4 rounded-lg shadow-md gap-4 relative"
             >
               <img
-                className="rounded-lg w-1/3 h-full md:w-full object-cover"
+                className="rounded-lg w-1/3 h-full object-cover"
                 src={menu.imageUrl}
                 alt={menu.name}
               />
-              <div className="h-full flex flex-col">
+              <div className="h-full flex flex-col flex-1">
                 <h3 className="font-semibold text-left">{menu.title}</h3>
                 <p className="text-black/70 text-sm mt-2 mb-10">
                   {menu.description.length > 120

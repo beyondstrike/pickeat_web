@@ -30,6 +30,7 @@ const OrderMenu = ({ modalId, item }) => {
         notes,
       });
     } catch (error) {
+      alert("Error adding to cart. Please try again.", error);
       console.error("Error adding to cart from OrderMenu:", error);
     } finally {
       setLoading(false);

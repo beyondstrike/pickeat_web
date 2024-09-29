@@ -196,7 +196,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           className={`self-start py-4 px-3 rounded-full shadow-sm w-20 h-20 border border-black/10 my-2 flex items-center justify-center gap-1`}
         >
           <Image
-            src="/icons/pickup.png"
+            src={"/icons/pickup.png"}
             alt="Pickup"
             width={20}
             height={20}
@@ -244,11 +244,10 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
       ) : orderType === 1 ? (
         <>
           <div className="mt-4 h-48 w-64 mx-auto relative">
-            <Image
-              src="/media/stadium_internal.png"
+            <img
+              src={`https://pickeat.blob.core.windows.net/internalmap/${stadiumId}.png`}
               alt="Stadium"
-              layout="fill"
-              objectFit="contain"
+              className="h-full w-full object-contain"
             />
             {pickupPoints[floor - 1]?.pickupPoints.map((point, index) => {
               const { coordinates, label } = point;

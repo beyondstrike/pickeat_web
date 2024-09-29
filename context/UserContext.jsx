@@ -172,6 +172,7 @@ const UserContext = ({ children }) => {
       }
       setCart([...cart, item]);
     } catch (error) {
+      alert(error);
       console.error("Error adding to cart", error);
     }
   };
