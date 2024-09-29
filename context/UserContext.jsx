@@ -43,6 +43,7 @@ const UserContext = ({ children }) => {
         ...user,
       });
       localStorage.setItem("token", token);
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
     } catch (error) {
       console.error("Error logging in with Google", error);
       const message = error.response?.data?.message || "Internal server error.";
@@ -71,6 +72,7 @@ const UserContext = ({ children }) => {
         ...user,
       });
       localStorage.setItem("token", token);
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
     } catch (error) {
       const errorCode = error.response?.data?.code;
       if (errorCode === 1) return confirmEmail(email);
