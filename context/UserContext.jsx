@@ -10,6 +10,8 @@ import io from "socket.io-client";
 const socket_url =
   "https://pickeat-asedfnc8hsfbevdj.italynorth-01.azurewebsites.net/";
 
+// const socket_url = "http://192.168.68.107:8080/";
+
 const userContext = createContext();
 export const useUser = () => useContext(userContext);
 
@@ -18,11 +20,15 @@ const UserContext = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [userLocation, setUserLocation] = useState({
     latitude: 44.3845,
     longitude: 7.5427,
   });
   const [socket, setSocket] = useState(null);
+
+  const [orderPing, setOrderPing] = useState(false);
+  const [cartPing, setCartPing] = useState(false);
 
   //user
   const loginWithGoogle = async () => {
@@ -299,7 +305,7 @@ const UserContext = ({ children }) => {
       const { data } = await api.post("/auth/orders", {
         userID,
       });
-      return data;
+      setOrders(data);
     } catch (error) {
       console.error("Error getting orders", error);
       return [];
@@ -410,6 +416,9 @@ const UserContext = ({ children }) => {
     getOrdersHistory,
 
     socket,
+    orders,
+    orderPing,
+    cartPing,
   };
 
   useEffect(() => {
@@ -419,6 +428,7 @@ const UserContext = ({ children }) => {
   useEffect(() => {
     if (!user?.userID) return;
     getCartItems();
+    getOrders();
     getUserLocation();
 
     const newSocket = io(socket_url);
@@ -430,6 +440,40 @@ const UserContext = ({ children }) => {
 
     setSocket(newSocket);
   }, [user]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("order_is_ready", () => {
+      setTimeout(() => {
+        getOrders();
+      }, 500);
+    });
+
+    return () => {
+      socket.off("order_is_ready");
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    if (cart.length === 0) return;
+    setCartPing(true);
+    const timeout = setTimeout(() => {
+      setCartPing(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [cart]);
+
+  useEffect(() => {
+    if (orders.length === 0) return;
+    setOrderPing(true);
+    const timeout = setTimeout(() => {
+      setOrderPing(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [orders]);
 
   return (
     <userContext.Provider value={provided}>

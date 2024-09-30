@@ -23,11 +23,8 @@ const Orders = () => {
   if (!modalContext || !userContext || !dataContext) return null;
 
   const { openModal, closeModal } = modalContext;
-  const { getOrders, socket } = userContext;
+  const { socket, orders } = userContext;
   const { currencies } = dataContext;
-
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const handleScanBarcode = (orderId, id) => {
     const [modalId, updateModalContent] = openModal(
@@ -38,40 +35,19 @@ const Orders = () => {
     );
   };
 
-  const fetchOrders = useCallback(() => {
-    setLoading(true);
-    getOrders()
-      .then((data) => {
-        setOrders(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [getOrders]);
-
-  useEffect(() => {
-    fetchOrders(); // Fetch orders when component is mounted
-  }, [fetchOrders]);
-
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("order_delivered", () => {
-      fetchOrders();
-      closeModal();
+    socket.on("order_is_ready", () => {
+      setTimeout(() => {
+        closeModal();
+      }, 500);
     });
 
     return () => {
-      socket.off("order_delivered");
+      socket.off("order_is_ready");
     };
-  }, [socket, fetchOrders]);
-
-  if (loading) {
-    return <Loader />;
-  }
+  }, [socket]);
 
   if (orders.length === 0) {
     return <EmptyOrders />;

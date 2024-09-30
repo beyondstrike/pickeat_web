@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useUser } from "@context/UserContext";
 
 const Navbar = ({ children }) => {
-  const { logout, cart } = useUser();
+  const { logout, cart, orders, orderPing, cartPing } = useUser();
   const pathName = usePathname();
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null); // Ref to detect clicks outside the menu
@@ -73,7 +73,7 @@ const Navbar = ({ children }) => {
         <nav className="w-full flex items-center gap-4 md:gap-6 justify-end">
           <Link
             href="/orders"
-            className="bg-white p-2 rounded-full shadow border hover:opacity-80"
+            className="bg-white p-2 rounded-full shadow border hover:opacity-80 relative"
           >
             <Image
               src="/icons/orders.png"
@@ -81,12 +81,23 @@ const Navbar = ({ children }) => {
               width={16}
               height={16}
             />
+            {orderPing && (
+              <div className="animate-ping  rounded-full bg-red-500 text-white absolute min-h-4 min-w-4 -top-1 -right-1 flex items-center justify-center" />
+            )}
+            {orders.length > 0 ? (
+              <div className="rounded-full bg-red-500 text-white absolute min-h-4 min-w-4 -top-1 -right-1 flex items-center justify-center text-xs">
+                {orders.length}
+              </div>
+            ) : null}
           </Link>
           <Link
             href="/cart"
             className="bg-white p-2 rounded-full shadow border hover:opacity-80 relative"
           >
             <Image src="/icons/cart.png" alt="cart" width={16} height={16} />
+            {cartPing && (
+              <div className="animate-ping  rounded-full bg-red-500 text-white absolute min-h-4 min-w-4 -top-1 -right-1 flex items-center justify-center" />
+            )}
             {cart.length > 0 ? (
               <div className="rounded-full bg-red-500 text-white absolute min-h-4 min-w-4 -top-1 -right-1 flex items-center justify-center text-xs">
                 {cart.length}

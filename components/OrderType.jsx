@@ -25,13 +25,13 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
   if (!dataContext || !userContext || !modalContext) return null;
 
   const { getStadiumPickupPoints, currencies } = dataContext;
-  const { cart, clearCart, getPaymentIntent, getMyCoupons, user } = userContext;
+  const { cart, clearCart, getPaymentIntent, getMyCoupons } = userContext;
   const { openModal, closeModal } = modalContext;
 
   const [orderType, setOrderType] = useState(1);
   const [pickupPoints, setPickupPoints] = useState([]);
   const [floor, setFloor] = useState(1);
-  const [pickupPoint, setPickupPoint] = useState(null);
+  const [pickupPoint, setPickupPoint] = useState("1");
   const [sector, setSector] = useState("");
   const [seat, setSeat] = useState("");
   const [loading, setLoading] = useState(true);
@@ -239,6 +239,24 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           );
         })}
       </div>
+      <div className="flex flex-row items-center space-x-2 justify-center">
+        {pickupPoints[floor - 1]?.pickupPoints.map((point, index) => {
+          const { label } = point;
+          return (
+            <button
+              key={index}
+              onClick={() => setPickupPoint(label)}
+              className={`py-2 px-4 border self-start border-black/10 my-2 items-center justify-center rounded-lg ${
+                label === pickupPoint ? "bg-[#ec7d55]" : "bg-white"
+              }`}
+            >
+              <span className={`text-xs font-semibold text-black`}>
+                {label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
       {loading ? (
         <Loader />
       ) : orderType === 1 ? (
@@ -253,7 +271,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
               const { coordinates, label } = point;
               const [x, y] = coordinates;
               return (
-                <button
+                <div
                   key={index}
                   style={{
                     left: `${x}px`,
@@ -261,12 +279,13 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
                     position: "absolute",
                   }}
                   className={`border px-3 ${
-                    label === pickupPoint ? "bg-main-1 text-white" : ""
+                    label === pickupPoint
+                      ? "bg-main-1 text-white"
+                      : "bg-main-1/50"
                   }`}
-                  onClick={() => setPickupPoint(label)}
                 >
                   <span className="text-white font-bold text-lg">{label}</span>
-                </button>
+                </div>
               );
             })}
           </div>
