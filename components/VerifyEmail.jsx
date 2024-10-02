@@ -25,11 +25,11 @@ const VerifyEmail = ({
   const handleVerify = async () => {
     setLoading(true);
     try {
-      if (digits.length !== 6) throw new Error("Invalid code.");
+      if (digits.length !== 6) throw new Error("Codice non valido.");
       await verifyEmail(email, value);
       closeModal(modalId);
 
-      toast.success("Email verified successfully.");
+      toast.success("Email verificata con successo.");
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -60,7 +60,7 @@ const VerifyEmail = ({
   return (
     <div className="max-w-xs w-full bg-white rounded shadow">
       <div className="p-4 flex items-center justify-between font-semibold text-sm">
-        Verify Your Email
+        Verifica la tua Email
         <button
           type="button"
           className="text-main font-semibold"
@@ -69,12 +69,12 @@ const VerifyEmail = ({
           <img
             className="h-4 w-4 object-contain"
             src="/icons/close.png"
-            alt="close"
+            alt="chiudi"
           />
         </button>
       </div>
       <p className="text-xs mt-2 text-black/70 text-center">
-        Please enter the 6-digit code sent to
+        Inserisci il codice di 6 cifre inviato a
       </p>
       <p className="text-center text-xs underline">{email}</p>
       <div className="flex items-center justify-evenly py-4">
@@ -116,7 +116,7 @@ const VerifyEmail = ({
         disabled={counter > 0}
         className="mt-2 mb-4 py-2 px-4 font-semibold text-xs text-main-1 w-full"
       >
-        {counter > 0 ? `Send again in ${counter}s` : `Resend Email`}
+        {counter > 0 ? `Invia di nuovo tra ${counter}s` : `Reinvia Email`}
       </button>
 
       <div className="p-4 pt-0">
@@ -128,7 +128,7 @@ const VerifyEmail = ({
           onClick={handleVerify}
           disabled={loading}
         >
-          Verify
+          Verifica
         </button>
       </div>
     </div>

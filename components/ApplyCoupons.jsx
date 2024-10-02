@@ -12,7 +12,7 @@ const ApplyCoupons = ({ onApply, onCancel, coupons }) => {
       >
         <Image
           src="/icons/close.png"
-          alt="Close"
+          alt="Chiudi"
           width={12}
           height={12}
           className="h-3 w-3"
@@ -20,7 +20,7 @@ const ApplyCoupons = ({ onApply, onCancel, coupons }) => {
         />
       </button>
       <h2 className="font-bold text-center py-4 border-b border-black/10">
-        Choose Coupons
+        Scegli il Coupon
       </h2>
       {coupons.map((coupon, index) => (
         <button
@@ -45,7 +45,7 @@ const ApplyCoupons = ({ onApply, onCancel, coupons }) => {
           onClick={() => onApply(selectedCoupon)}
           className="bg-white py-2 rounded-lg w-full border border-main-1"
         >
-          <span className="text-main-1 text-center font-semibold">Apply</span>
+          <span className="text-main-1 text-center font-semibold">Applica</span>
         </button>
       </div>
     </div>

@@ -30,8 +30,8 @@ const OrderMenu = ({ modalId, item }) => {
         notes,
       });
     } catch (error) {
-      alert("Error adding to cart. Please try again.", error);
-      console.error("Error adding to cart from OrderMenu:", error);
+      alert("Errore nell'aggiunta al carrello. Riprova.", error);
+      console.error("Errore nell'aggiunta al carrello da OrderMenu:", error);
     } finally {
       setLoading(false);
       closeModal(modalId);
@@ -53,13 +53,17 @@ const OrderMenu = ({ modalId, item }) => {
     <div className="bg-white border border-black/20 rounded-2xl h-full w-full max-h-screen overflow-auto py-10 px-5">
       <div className="flex justify-end">
         <button className="p-2" onClick={() => closeModal(modalId)}>
-          <img className="h-3 w-3" src="/icons/close.png" alt="close" />
+          <img className="h-3 w-3" src="/icons/close.png" alt="chiudi" />
         </button>
       </div>
 
       <div className="flex items-center justify-between pb-4">
         <div className="flex items-center space-x-2">
-          <img src={item.imageUrl} className="h-20 w-20 rounded-full" />
+          <img
+            src={item.imageUrl}
+            className="h-20 w-20 rounded-full"
+            alt={item.title}
+          />
           <p className="text-[16px] font-bold">{item.title}</p>
         </div>
         <div className="flex p-1 items-center space-x-2 bg-gray-200 rounded-full">
@@ -73,7 +77,7 @@ const OrderMenu = ({ modalId, item }) => {
             <img
               className="h-full w-full object-contain"
               src="/icons/minus.png"
-              alt="minus"
+              alt="meno"
             />
           </button>
           <p>{orderNumber}</p>
@@ -84,14 +88,14 @@ const OrderMenu = ({ modalId, item }) => {
             <img
               className="h-full w-full object-contain"
               src="/icons/add.png"
-              alt="add"
+              alt="aggiungi"
             />
           </button>
         </div>
       </div>
       <p className="text-sm text-black/70">{item.description}</p>
       <div className="flex flex-col py-4">
-        <h2 className="font-semibold">Ingredients</h2>
+        <h2 className="font-semibold">Ingredienti</h2>
         <p className="text-black/70 whitespace-pre-line">
           {item.ingredients.map((ingredient) => `▶ ${ingredient}`).join("\n")}
         </p>
@@ -110,13 +114,13 @@ const OrderMenu = ({ modalId, item }) => {
           <img
             className="h-full w-full object-contain"
             src="/icons/allergenic.png"
-            alt="allergenic"
+            alt="allergenico"
           />
         </div>
-        Allergic & Nutritional Information
+        Informazioni su Allergeni e Valori Nutrizionali
       </button>
       <div className="flex flex-col py-4">
-        <h2 className="font-semibold">Extras</h2>
+        <h2 className="font-semibold">Extra</h2>
         <p className="text-black/70 whitespace-pre-line">
           {item.extras.map((extra, index) => {
             const multiOptions = item?.multiOptions;
@@ -160,10 +164,14 @@ const OrderMenu = ({ modalId, item }) => {
         </p>
       </div>
       <div className="flex flex-col py-4">
-        <h2 className="font-semibold">Notes</h2>
+        <h2 className="font-semibold">Note</h2>
         <textarea
           className="p-2 border border-black/10 rounded-lg"
-          placeholder="Add notes for your order"
+          placeholder={
+            item.notesPlaceholder
+              ? item.notesPlaceholder
+              : "Aggiungi qui note speciali..."
+          }
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
         />
@@ -174,8 +182,10 @@ const OrderMenu = ({ modalId, item }) => {
           onClick={finish}
         >
           {loading
-            ? "Adding to cart..."
-            : `Add to cart | ${currencies[item.currency]}${totalPrice}`}
+            ? "Aggiungendo al carrello..."
+            : `Aggiungi al carrello | ${
+                currencies[item.currency]
+              }${totalPrice}`}
         </button>
       </div>
     </div>

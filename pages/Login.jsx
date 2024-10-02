@@ -64,14 +64,16 @@ const Login = () => {
           </div>
 
           <div className="mt-2 text-center">
-            <h1 className="text-xl font-bold">Welcome aboard my friend</h1>
-            <p className="mt-2 text-sm">Just a couple of clicks and we start</p>
+            <h1 className="text-xl font-bold">Benvenuto a bordo, amico mio</h1>
+            <p className="mt-2 text-sm">
+              Solo un paio di clic e iniziamo il viaggio
+            </p>
           </div>
         </div>
 
         <div className="flex flex-col justify-center bg-white w-full md:w-1/2 px-5 md:px-14 py-10">
           <h2 className="text-xl font-bold mb-8 text-main text-center">
-            {isRegistering ? "Register" : "Log in"}
+            {isRegistering ? "Registrati" : "Accedi"}
           </h2>
 
           <form onSubmit={handleSubmit} className="">
@@ -84,7 +86,7 @@ const Login = () => {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-main-1"
-                    placeholder="First name"
+                    placeholder="Nome"
                     required
                   />
                 </div>
@@ -95,7 +97,7 @@ const Login = () => {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-main-1"
-                    placeholder="Last name"
+                    placeholder="Cognome"
                     required
                   />
                 </div>
@@ -162,7 +164,7 @@ const Login = () => {
                   type="button"
                   className="text-sm text-main hover:text-secondary disabled:opacity-50 font-semibold"
                 >
-                  Forgot password?
+                  Password dimenticata?
                 </button>
               </div>
             )}
@@ -172,13 +174,13 @@ const Login = () => {
               type="submit"
               className="w-full mt-8 py-3 bg-main-1 text-white font-semibold rounded-full hover:bg-main-2 transition disabled:opacity-50"
             >
-              {isRegistering ? "Register" : "Log in"}
+              {isRegistering ? "Registrati" : "Accedi"}
             </button>
           </form>
 
           <div className="flex items-center justify-center gap-4 py-4">
             <div className="h-[0.5px] bg-main-1/50 w-1/4" />
-            <p className="text-xs text-main uppercase">Or</p>
+            <p className="text-xs text-main uppercase">O</p>
             <div className="h-[0.5px] bg-main-1/50 w-1/4" />
           </div>
 
@@ -198,13 +200,13 @@ const Login = () => {
           </div>
 
           <p className="mt-6 text-sm text-center text-gray-600">
-            Have no account yet?{" "}
+            Non hai ancora un account?{" "}
             <button
               type="button"
               className="underline text-xs font-semibold"
               onClick={() => setIsRegistering((prev) => !prev)}
             >
-              {isRegistering ? "Log in" : "Register"}
+              {isRegistering ? "Accedi" : "Registrati"}
             </button>
           </p>
         </div>

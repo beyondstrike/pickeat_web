@@ -55,14 +55,14 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
       );
 
       if (!paymentIntent) {
-        console.error("No paymentIntent returned.");
+        console.error("Nessun paymentIntent restituito.");
         return null;
       }
 
       // Return the client secret
       return { clientSecret: paymentIntent.client_secret };
     } catch (error) {
-      console.error("Error initializing payment sheet", error);
+      console.error("Errore nell'inizializzazione del pagamento", error);
       return null;
     } finally {
       setLoading(false);
@@ -129,7 +129,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
         </Elements>
       );
     } else {
-      alert("Failed to initialize payment. Please try again.");
+      alert("Impossibile inizializzare il pagamento. Riprova.");
     }
   };
 
@@ -148,7 +148,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
         const points = await getStadiumPickupPoints(stadiumId);
         setPickupPoints(points);
       } catch (error) {
-        console.error("Error fetching pickup points:", error);
+        console.error("Errore nel recupero dei punti di ritiro:", error);
       } finally {
         setLoading(false);
       }
@@ -160,9 +160,9 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
     <div className="py-4 px-2 bg-white max-w-xs w-full">
       <div className="flex flex-row items-center space-x-2">
         <button onClick={onBack} className="bg-white/50 p-3 rounded-full">
-          <Image src="/icons/back.png" alt="Back" width={16} height={16} />
+          <Image src="/icons/back.png" alt="Indietro" width={16} height={16} />
         </button>
-        <h2 className="text-[16px] font-bold">How do you want to order?</h2>
+        <h2 className="text-[16px] font-bold">Come vuoi ordinare?</h2>
       </div>
       <div className="flex flex-row items-center justify-center space-x-4">
         <button
@@ -172,7 +172,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
         >
           <Image
             src="/icons/delivery.png"
-            alt="Delivery"
+            alt="Consegna"
             width={20}
             height={20}
             className="m-auto"
@@ -188,7 +188,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
               orderType === 0 ? "text-main-1" : "text-black"
             }`}
           >
-            Delivery
+            Consegna
           </span>
         </button>
         <button
@@ -197,7 +197,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
         >
           <Image
             src={"/icons/pickup.png"}
-            alt="Pickup"
+            alt="Ritiro"
             width={20}
             height={20}
             className="m-auto"
@@ -213,7 +213,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
               orderType === 1 ? "text-main-1" : "text-black"
             }`}
           >
-            Pickup
+            Ritiro
           </span>
         </button>
       </div>
@@ -233,7 +233,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
                   floor === floorNumber ? "text-main-1" : "text-black"
                 }`}
               >
-                Floor: {floorNumber}
+                Piano: {floorNumber}
               </span>
             </button>
           );
@@ -264,7 +264,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           <div className="mt-4 h-48 w-64 mx-auto relative">
             <img
               src={`https://pickeat.blob.core.windows.net/internalmap/${stadiumId}.png`}
-              alt="Stadium"
+              alt="Stadio"
               className="h-full w-full object-contain"
             />
             {pickupPoints[floor - 1]?.pickupPoints.map((point, index) => {
@@ -291,31 +291,34 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           </div>
           <div className="py-0">
             <h3 className="text-sm font-semibold text-center">
-              Pick up points
+              Punti di Ritiro
             </h3>
           </div>
         </>
       ) : (
         <div className="py-4">
           <h3 className="text-sm font-semibold text-center">
-            Delivery Address
+            Indirizzo di Consegna
           </h3>
           <input
             value={sector}
             onChange={(e) => setSector(e.target.value)}
-            placeholder="Sector"
+            placeholder="Settore"
             className="border border-black/10 rounded-lg p-2 mt-2 w-full"
             type="number"
           />
           <input
             value={seat}
             onChange={(e) => setSeat(e.target.value)}
-            placeholder="Seat"
+            placeholder="Posto"
             className="border border-black/10 rounded-lg p-2 mt-2 w-full"
             type="number"
           />
         </div>
       )}
+      <div>
+        Fee's will be charged based on the delivery option and the distance
+      </div>
       <button
         disabled={isDisabled()}
         onClick={openPaymentModal}
@@ -325,10 +328,10 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
       >
         <span className="text-center font-semibold text-white">
           {cart.length > 0
-            ? `Purchase | ${currencies[cart[0].currency]}${cart
+            ? `Acquista | ${currencies[cart[0].currency]}${cart
                 .reduce((acc, item) => acc + item.totalPrice, 0)
                 .toFixed(2)}`
-            : "Cart is empty"}
+            : "Carrello vuoto"}
         </span>
       </button>
     </div>
@@ -345,7 +348,7 @@ const PaymentForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
-      console.error("Stripe has not been initialized.");
+      console.error("Stripe non è stato inizializzato.");
       return;
     }
 
@@ -358,8 +361,8 @@ const PaymentForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
     });
 
     if (error) {
-      console.error("Error confirming payment:", error.message);
-      alert(`Payment failed: ${error.message}`);
+      console.error("Errore nella conferma del pagamento:", error.message);
+      alert(`Pagamento fallito: ${error.message}`);
       setLoading(false);
     } else {
       // Retrieve the PaymentIntent to check the status
@@ -372,15 +375,15 @@ const PaymentForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
         (paymentIntent.status === "succeeded" ||
           paymentIntent.status === "requires_capture")
       ) {
-        console.log("Payment successful");
+        console.log("Pagamento riuscito");
         toast.success(
-          "Payment successful! You will be notified when the order status changes."
+          "Pagamento riuscito! Sarai avvisato quando lo stato dell'ordine cambia."
         );
         // Call the onPaymentSuccess prop
         onPaymentSuccess();
       } else {
-        console.error("Unexpected payment status:", paymentIntent?.status);
-        toast.error("Payment failed. Please try again.");
+        console.error("Stato del pagamento imprevisto:", paymentIntent?.status);
+        toast.error("Pagamento fallito. Riprova.");
         setLoading(false);
       }
     }
@@ -392,9 +395,9 @@ const PaymentForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
       className="p-4 max-w-xs w-full bg-white rounded-lg"
     >
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold">Complete Payment</h2>
+        <h2 className="text-lg font-semibold">Completa il Pagamento</h2>
         <button type="button" onClick={onClose}>
-          <Image src="/icons/close.png" alt="Close" width={20} height={20} />
+          <Image src="/icons/close.png" alt="Chiudi" width={20} height={20} />
         </button>
       </div>
       <div className="border p-4 rounded-lg mb-4">
@@ -408,7 +411,7 @@ const PaymentForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
         }`}
       >
         <span className="text-center font-semibold text-white">
-          {loading ? "Processing..." : "Complete Payment"}
+          {loading ? "Elaborazione..." : "Completa il Pagamento"}
         </span>
       </button>
     </form>

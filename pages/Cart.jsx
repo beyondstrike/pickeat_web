@@ -25,7 +25,7 @@ const Cart = () => {
       (item) => item.stadiumId !== cart[0].stadiumId
     );
     if (isCartHasMultipleStadiums) {
-      alert("You can't order from multiple stadiums at once");
+      alert("Non puoi ordinare da più stadi contemporaneamente");
       return;
     }
     const stadiumId = cart[0].stadiumId;
@@ -47,7 +47,10 @@ const Cart = () => {
       setLoading(true);
       await updateCartItem(id, amount);
     } catch (error) {
-      console.error("Error updating cart item:", error);
+      console.error(
+        "Errore nell'aggiornamento dell'articolo del carrello:",
+        error
+      );
     } finally {
       setLoading(false);
     }
@@ -56,12 +59,12 @@ const Cart = () => {
   return (
     <div className="flex flex-col bg-white p-4 h-[75vh]">
       <div className="flex flex-row items-center justify-between">
-        <h2 className="text-xl uppercase">My Items ({cart.length})</h2>
+        <h2 className="text-xl uppercase">I miei articoli ({cart.length})</h2>
         <button
           className="px-2 py-1 border border-main-1 shadow-sm rounded-lg bg-white"
           onClick={clearCart}
         >
-          <span className="text-sm text-main-1">Clear All</span>
+          <span className="text-sm text-main-1">Cancella tutto</span>
         </button>
       </div>
       <div className="mt-4 bg-gray-100 rounded-lg p-4 overflow-auto flex-1">
@@ -111,7 +114,7 @@ const Cart = () => {
                   >
                     <Image
                       src="/icons/minus.png"
-                      alt="Minus"
+                      alt="Meno"
                       width={12}
                       height={12}
                     />
@@ -126,7 +129,7 @@ const Cart = () => {
                   >
                     <Image
                       src="/icons/add.png"
-                      alt="Add"
+                      alt="Aggiungi"
                       width={12}
                       height={12}
                     />
@@ -138,7 +141,7 @@ const Cart = () => {
                 >
                   <Image
                     src="/icons/close.png"
-                    alt="Close"
+                    alt="Chiudi"
                     width={12}
                     height={12}
                   />
@@ -156,7 +159,7 @@ const Cart = () => {
         } shadow-sm`}
       >
         <span className="text-white text-center">
-          Checkout
+          Acquista
           {cart.length > 0
             ? ` | ${currencies[cart[0].currency]}${cart
                 .reduce((acc, item) => acc + item.totalPrice, 0)

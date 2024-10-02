@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useModal } from "../context/ModalContext";
 import { useUser } from "../context/UserContext";
-import Loader from "../components/Loader";
 import moment from "moment";
 import { useData } from "../context/DataContext";
 import OrderCompletionScan from "@components/OrderCompletionScan";
@@ -10,7 +9,7 @@ import OrderCompletionScan from "@components/OrderCompletionScan";
 const EmptyOrders = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-white">
-      <p className="font-semibold">No current orders found</p>
+      <p className="font-semibold">Non sono stati trovati ordini attuali</p>
     </div>
   );
 };
@@ -58,24 +57,20 @@ const Orders = () => {
       {orders.map((order, index) => (
         <div key={index} className="rounded-lg border p-2 bg-gray-100 mt-4">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold">{`Order: ${order.orderID}`}</p>
+            <p className="text-xs font-semibold">{`Ordine: ${order.orderID}`}</p>
             {order.status === "ready" ? (
               <button
                 onClick={() => handleScanBarcode(order.orderID, order._id)}
               >
                 <img
-                  src="/icons/barcode.png" // Replace with the actual path to the barcode icon
-                  alt="Scan Barcode"
+                  src="/icons/barcode.png"
+                  alt="Scansiona Codice a Barre"
                   className="h-5 w-5"
                 />
               </button>
             ) : (
               <div className="flex items-center space-x-1">
-                <img
-                  src="/icons/timer.png" // Replace with the actual path to the timer icon
-                  alt="Timer"
-                  className="h-5 w-5"
-                />
+                <img src="/icons/timer.png" alt="Timer" className="h-5 w-5" />
                 <p className="text-xs font-semibold">
                   {moment(order.timeSlot, "HH:mm").fromNow()}
                 </p>
@@ -113,7 +108,7 @@ const Orders = () => {
                     ))}
                   </div>
                   <p className="text-xs font-semibold mt-auto">
-                    Quantity: {item.quantity}
+                    Quantità: {item.quantity}
                   </p>
                 </div>
               </div>

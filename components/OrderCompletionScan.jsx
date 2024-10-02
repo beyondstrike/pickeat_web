@@ -15,11 +15,11 @@ const OrderCompletionScan = ({ orderId, id, modalId }) => {
         onClick={() => closeModal(modalId)}
         className="absolute top-2 right-2 p-1 z-10"
       >
-        <img src="/icons/close.png" alt="Close" className="h-4 w-4" />
+        <img src="/icons/close.png" alt="Chiudi" className="h-4 w-4" />
       </button>
       <p className="font-bold text-lg text-center">{orderId}</p>
       <p className="font-bold text-xs text-center py-2">
-        Scan the QR code to complete your order
+        Scansiona il codice QR per completare il tuo ordine
       </p>
       <div className="h-80 w-80 mx-auto flex items-center justify-center">
         <QRCodeSVG value={id} height={250} width={250} />,

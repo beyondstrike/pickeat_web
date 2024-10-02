@@ -53,7 +53,7 @@ const OrderDateTime = ({ restaurants, stadiumId }) => {
       const localizedSlots = slots.map((slot) => convertToUserTimezone(slot));
       setSlots(localizedSlots);
     } catch (error) {
-      console.error("Error fetching available slots:", error);
+      console.error("Errore nel recuperare gli slot disponibili:", error);
     } finally {
       setLoading(false);
     }
@@ -66,7 +66,7 @@ const OrderDateTime = ({ restaurants, stadiumId }) => {
   return (
     <div className="bg-white border-t border-black/10 px-2 flex flex-col h-full w-full max-w-xs">
       <h2 className="text-lg font-semibold py-4 mb-4 text-center border-b border-black/10">
-        Select Timeslot
+        Seleziona la Fascia Oraria
       </h2>
       {loading ? (
         <div className="py-4">
@@ -101,7 +101,7 @@ const OrderDateTime = ({ restaurants, stadiumId }) => {
         onClick={nextStep}
         className="p-4 bg-main-1 rounded-full mb-4 mt-4 text-white font-semibold"
       >
-        Continue
+        Continua
       </button>
     </div>
   );
