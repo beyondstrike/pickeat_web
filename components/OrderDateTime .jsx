@@ -66,7 +66,7 @@ const OrderDateTime = ({ restaurants, stadiumId }) => {
   return (
     <div className="bg-white border-t border-black/10 px-2 flex flex-col h-full w-full max-w-xs">
       <h2 className="text-lg font-semibold py-4 mb-4 text-center border-b border-black/10">
-        Select Date
+        Select Timeslot
       </h2>
       {loading ? (
         <div className="py-4">

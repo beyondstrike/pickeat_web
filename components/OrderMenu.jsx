@@ -118,35 +118,43 @@ const OrderMenu = ({ modalId, item }) => {
       <div className="flex flex-col py-4">
         <h2 className="font-semibold">Extras</h2>
         <p className="text-black/70 whitespace-pre-line">
-          {item.extras.map((extra, index) => (
-            <div key={index} className="flex items-center justify-between">
-              <div className="flex flex-1">
-                <input
-                  type="checkbox"
-                  id={`extra-${index}`}
-                  onChange={() =>
-                    setAdditions((prev) =>
-                      prev.includes(index)
-                        ? prev.filter((i) => i !== index)
-                        : [...prev, index]
-                    )
-                  }
-                />
-                <label
-                  className="ml-2 text-black/70 flex-1"
-                  htmlFor={`extra-${index}`}
-                >
-                  {extra.title}
-                </label>
+          {item.extras.map((extra, index) => {
+            const multiOptions = item?.multiOptions;
+            return (
+              <div key={index} className="flex items-center justify-between">
+                <div className="flex flex-1">
+                  <input
+                    type={multiOptions ? "checkbox" : "radio"}
+                    id={`extra-${index}`}
+                    checked={additions.includes(index)} // Control the checked status
+                    onChange={() => {
+                      if (multiOptions) {
+                        setAdditions((prev) =>
+                          prev.includes(index)
+                            ? prev.filter((i) => i !== index)
+                            : [...prev, index]
+                        );
+                      } else {
+                        setAdditions([index]);
+                      }
+                    }}
+                  />
+                  <label
+                    className="ml-2 text-black/70 flex-1"
+                    htmlFor={`extra-${index}`}
+                  >
+                    {extra.title}
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <p className="text-[16px] font-bold">
+                    {currencies[item.currency]}
+                    {extra.price.toFixed(2)}
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <p className="text-[16px] font-bold">
-                  {currencies[item.currency]}
-                  {extra.price.toFixed(2)}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </p>
       </div>
       <div className="flex flex-col py-4">
