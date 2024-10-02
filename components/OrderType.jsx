@@ -291,7 +291,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           </div>
           <div className="py-0">
             <h3 className="text-sm font-semibold text-center">
-              Punti di Ritiro
+              Ritiro al Bar - lato destro
             </h3>
           </div>
         </>
@@ -316,9 +316,6 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           />
         </div>
       )}
-      <div>
-        Fee's will be charged based on the delivery option and the distance
-      </div>
       <button
         disabled={isDisabled()}
         onClick={openPaymentModal}

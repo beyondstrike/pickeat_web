@@ -51,9 +51,14 @@ const UserContext = ({ children }) => {
       localStorage.setItem("token", token);
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
     } catch (error) {
-      console.error("Error logging in with Google", error);
-      const message = error.response?.data?.message || "Internal server error.";
-      throw new Error(message);
+      if (error.code === "auth/popup-closed-by-user") {
+        console.warn("Google login canceled by the user.");
+      } else {
+        console.error("Error logging in with Google", error);
+        const message =
+          error.response?.data?.message || "Internal server error.";
+        throw new Error(message);
+      }
     }
   };
 

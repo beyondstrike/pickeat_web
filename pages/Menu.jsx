@@ -82,7 +82,7 @@ const Menu = ({ stadiumID }) => {
                 className="flex flex-row md:flex-col items-start justify-center bg-white p-4 rounded-lg shadow-md gap-4 relative"
               >
                 <img
-                  className="rounded-lg w-1/3 h-full object-cover"
+                  className="rounded-lg h-32 w-32 h-full object-contain"
                   src={menu.imageUrl}
                   alt={menu.name}
                 />
