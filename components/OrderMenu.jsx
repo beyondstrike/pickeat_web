@@ -146,12 +146,14 @@ const OrderMenu = ({ modalId, item }) => {
                     {extra.title}
                   </label>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <p className="text-[16px] font-bold">
-                    {currencies[item.currency]}
-                    {extra.price.toFixed(2)}
-                  </p>
-                </div>
+                {extra.price > 0 ? (
+                  <div className="flex items-center space-x-2">
+                    <p className="text-[16px] font-bold">
+                      {currencies[item.currency]}
+                      {extra.price.toFixed(2)}
+                    </p>
+                  </div>
+                ) : null}
               </div>
             );
           })}
