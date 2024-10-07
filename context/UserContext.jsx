@@ -56,7 +56,9 @@ const UserContext = ({ children }) => {
       } else {
         console.error("Error logging in with Google", error);
         const message =
-          error.response?.data?.message || "Internal server error.";
+          error.response?.data?.message ||
+          error.code ||
+          "Internal server error.";
         throw new Error(message);
       }
     }
