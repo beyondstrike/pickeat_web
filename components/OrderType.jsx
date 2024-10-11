@@ -13,6 +13,7 @@ import {
 } from "@stripe/react-stripe-js";
 import ApplyCoupons from "./ApplyCoupons";
 import { toast } from "react-toastify";
+import LoginPopup from "@pages/LoginPopup";
 
 // Load the Stripe object
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLISHER_KEY);
@@ -25,7 +26,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
   if (!dataContext || !userContext || !modalContext) return null;
 
   const { getStadiumPickupPoints, currencies } = dataContext;
-  const { cart, clearCart, getPaymentIntent, getMyCoupons } = userContext;
+  const { cart, clearCart, getPaymentIntent, getMyCoupons, user } = userContext;
   const { openModal, closeModal } = modalContext;
 
   const [orderType, setOrderType] = useState(1);
@@ -35,6 +36,11 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
   const [sector, setSector] = useState("");
   const [seat, setSeat] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const loginUser = () => {
+    const [modalId, updateModalContent] = openModal(<LoginPopup />);
+    updateModalContent(<LoginPopup modalId={modalId} />);
+  };
 
   const initializePaymentSheet = async (coupon) => {
     setLoading(true);
@@ -89,6 +95,10 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
   };
 
   const openPaymentModal = async () => {
+    if (!user?.userID) {
+      loginUser();
+      return;
+    }
     const coupons = await getMyCoupons();
     let coupon = null;
 

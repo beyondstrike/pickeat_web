@@ -7,11 +7,10 @@ import "react-medium-image-zoom/dist/styles.css";
 import ModalContext from "@context/ModalContext";
 import UserContext from "@context/UserContext";
 import DataContext from "@context/DataContext";
-import ScreenTemplate from "@components/ScreenTemplate";
+import "normalize.css";
 
 const Modal = dynamic(() => import("@components/Modal"), { ssr: false });
 const Navbar = dynamic(() => import("@components/Navbar"), { ssr: false });
-const Footer = dynamic(() => import("@components/Footer"), { ssr: false });
 
 export const metadata = {
   title: "PickEat | Order Food from Your Seat",
@@ -54,12 +53,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html className="light" lang="en">
       <head>
         <meta charSet="utf-8" />
         <link rel="icon" href="/static/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#ffffff" />
+        <meta
+          name="theme-color"
+          content="#ffffff"
+          media="(prefers-color-scheme: light)"
+        />
         <link rel="apple-touch-icon" href="/static/logo192.png" />
         <link rel="manifest" href="/static/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -105,11 +108,9 @@ export default function RootLayout({ children }) {
         <ModalContext>
           <UserContext>
             <DataContext>
-              <ScreenTemplate>
-                <Navbar>
-                  <main>{children}</main>
-                </Navbar>
-              </ScreenTemplate>
+              <Navbar>
+                <main>{children}</main>
+              </Navbar>
               <Modal />
             </DataContext>
           </UserContext>

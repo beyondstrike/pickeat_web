@@ -6,10 +6,15 @@ import { usePathname } from "next/navigation";
 import { useUser } from "@context/UserContext";
 
 const Navbar = ({ children }) => {
-  const { logout, cart, orders, orderPing, cartPing } = useUser();
+  const { logout, cart, orders, orderPing, cartPing, user } = useUser();
   const pathName = usePathname();
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null); // Ref to detect clicks outside the menu
+
+  const handleLogout = () => {
+    logout();
+    setShowMenu(false);
+  };
 
   // Close the menu if a click is detected outside the menu
   useEffect(() => {
@@ -118,19 +123,34 @@ const Navbar = ({ children }) => {
                   />
                   Carrello
                 </Link>
-                <button
-                  onClick={logout}
-                  type="button"
-                  className="flex items-center gap-2 py-2 font-semibold text-sm px-4 hover:bg-main-1/10 transition-all duration-150 ease-in-out"
-                >
-                  <Image
-                    src="/icons/logout.png"
-                    alt="logout"
-                    width={22}
-                    height={22}
-                  />
-                  Logout
-                </button>
+                {user?.userID ? (
+                  <button
+                    onClick={handleLogout}
+                    type="button"
+                    className="flex items-center gap-2 py-2 font-semibold text-sm px-4 hover:bg-main-1/10 transition-all duration-150 ease-in-out"
+                  >
+                    <Image
+                      src="/icons/logout.png"
+                      alt="logout"
+                      width={22}
+                      height={22}
+                    />
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-2 py-2 font-semibold text-sm px-4 hover:bg-main-1/10 transition-all duration-150 ease-in-out"
+                  >
+                    <Image
+                      src="/icons/user.png"
+                      alt="logout"
+                      width={22}
+                      height={22}
+                    />
+                    Login
+                  </Link>
+                )}
               </div>
             )}
           </div>

@@ -157,10 +157,12 @@ const UserContext = ({ children }) => {
   const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setUserLocation({
+        const location = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        });
+        };
+        setUserLocation(location);
+        localStorage.setItem("userLocation", JSON.stringify(location));
       });
     }
   };
@@ -433,10 +435,16 @@ const UserContext = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!user?.userID) return;
     getCartItems();
+    if (!user?.userID) return;
     getOrders();
-    getUserLocation();
+
+    const storedLocation = localStorage.getItem("userLocation");
+    if (storedLocation) {
+      setUserLocation(JSON.parse(storedLocation));
+    } else {
+      getUserLocation();
+    }
 
     const newSocket = io(socket_url);
     newSocket.on("connect", () => {
