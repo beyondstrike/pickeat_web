@@ -31,7 +31,7 @@ const UserContext = ({ children }) => {
   const [cartPing, setCartPing] = useState(false);
 
   //user
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (retryCount = 0) => {
     try {
       const result = await signInWithGoogle();
       const { user: googleUser } = result;
@@ -53,6 +53,10 @@ const UserContext = ({ children }) => {
     } catch (error) {
       if (error.code === "auth/popup-closed-by-user") {
         console.warn("Google login canceled by the user.");
+      } else if (error.code === "auth/popup-blocked" && retryCount < 3) {
+        // Retry the login automatically if popup was blocked
+        console.warn("Popup blocked, retrying login...");
+        return loginWithGoogle(retryCount + 1);
       } else {
         console.error("Error logging in with Google", error);
         const message =
