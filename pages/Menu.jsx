@@ -96,7 +96,10 @@ const Menu = ({ stadiumID }) => {
                   <div className="flex items-center justify-between w-full">
                     <div className="font-bold text-2xl md:text-lg">
                       {currencies[menu.currency]}
-                      {menu.price}
+                      {menu.price ||
+                        //get lowest price from extras
+                        (menu.extras.length > 0 &&
+                          Math.min(...menu.extras.map((extra) => extra.price)))}
                     </div>
                     <Button
                       className={
