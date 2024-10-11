@@ -4,8 +4,10 @@ import Splash from "@pages/Splash";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useModal } from "@context/ModalContext";
 import VerifyEmail from "@components/VerifyEmail";
-import { signInWithGoogle } from "@firebase";
+import { auth } from "@firebase";
 import io from "socket.io-client";
+import { onAuthStateChanged, signOut, getRedirectResult } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const socket_url =
   "https://pickeat-asedfnc8hsfbevdj.italynorth-01.azurewebsites.net/";
@@ -29,44 +31,6 @@ const UserContext = ({ children }) => {
 
   const [orderPing, setOrderPing] = useState(false);
   const [cartPing, setCartPing] = useState(false);
-
-  //user
-  const loginWithGoogle = async (retryCount = 0) => {
-    try {
-      const result = await signInWithGoogle();
-      const { user: googleUser } = result;
-
-      const { email, displayName, photoURL } = googleUser;
-      const {
-        data: { token, user },
-      } = await api.post("/auth/oAuth/google", {
-        email,
-        firstName: displayName.split(" ")[0],
-        lastName: displayName.split(" ")[1],
-        profileImg: photoURL,
-      });
-      setUser({
-        ...user,
-      });
-      localStorage.setItem("token", token);
-      api.defaults.headers["Authorization"] = `Bearer ${token}`;
-    } catch (error) {
-      if (error.code === "auth/popup-closed-by-user") {
-        console.warn("Google login canceled by the user.");
-      } else if (error.code === "auth/popup-blocked" && retryCount < 3) {
-        // Retry the login automatically if popup was blocked
-        console.warn("Popup blocked, retrying login...");
-        return loginWithGoogle(retryCount + 1);
-      } else {
-        console.error("Error logging in with Google", error);
-        const message =
-          error.response?.data?.message ||
-          error.code ||
-          "Internal server error.";
-        throw new Error(message);
-      }
-    }
-  };
 
   const confirmEmail = async (email) => {
     const [modalId, updateModalContent] = openModal(<VerifyEmail />);
@@ -135,6 +99,7 @@ const UserContext = ({ children }) => {
   };
 
   const logout = () => {
+    signOut(auth);
     setUser(null);
     localStorage.removeItem("token");
   };
@@ -407,7 +372,6 @@ const UserContext = ({ children }) => {
     user,
     login,
     register,
-    loginWithGoogle,
     logout,
     userLocation,
     //cart
@@ -493,6 +457,56 @@ const UserContext = ({ children }) => {
 
     return () => clearTimeout(timeout);
   }, [orders]);
+
+  useEffect(() => {
+    const checkGoogleLogin = async () => {
+      // Check if a redirect result is available
+      try {
+        const result = await getRedirectResult(auth);
+        if (result && result.user) {
+          handleUserLogin(result.user); // Process user login
+        }
+      } catch (error) {
+        console.error("Error getting redirect result:", error);
+      }
+
+      // Now observe auth state changes as a fallback
+      onAuthStateChanged(auth, (googleUser) => {
+        if (googleUser) {
+          handleUserLogin(googleUser);
+        } else {
+          console.log("No user is logged in.");
+        }
+      });
+    };
+
+    // Call the login check as soon as the app loads
+    checkGoogleLogin();
+  }, []); // Run once on component mount
+
+  // Function to handle login
+  const handleUserLogin = async (googleUser) => {
+    const accessToken = await googleUser.getIdToken();
+    if (!accessToken) return;
+    try {
+      const { email, displayName, photoURL } = googleUser;
+      const {
+        data: { token, user },
+      } = await api.post("/auth/oAuth/google", {
+        email,
+        firstName: displayName.split(" ")[0],
+        lastName: displayName.split(" ")[1],
+        profileImg: photoURL,
+      });
+      setUser({
+        ...user,
+      });
+      localStorage.setItem("token", token);
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <userContext.Provider value={provided}>

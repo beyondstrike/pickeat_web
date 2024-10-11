@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+} from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,28 +19,19 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Lazy load Firebase Auth and Google Provider
-let auth;
-let googleProvider;
-
-const initializeFirebaseAuth = () => {
-  if (!auth) {
-    auth = getAuth(app);
-    googleProvider = new GoogleAuthProvider();
-  }
-};
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 // Sign in with Google
 const signInWithGoogle = async () => {
-  initializeFirebaseAuth();
   try {
-    const result = await signInWithPopup(auth, googleProvider);
-    return result;
+    // const result = await signInWithPopup(auth, googleProvider);
+    // return result;
+    await signInWithRedirect(auth, provider);
   } catch (error) {
     console.error("Error signing in with Google:", error);
     throw error; // Rethrow to handle it in the caller function if needed
   }
 };
 
-export { app, signInWithGoogle };
+export { app, signInWithGoogle, auth };

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
+import { signInWithGoogle } from "@firebase";
 
 const Login = () => {
   const [firstName, setFirstName] = useState("");
@@ -18,12 +19,12 @@ const Login = () => {
 
   const userContext = useUser();
   if (!userContext) return null;
-  const { login, register, loginWithGoogle } = userContext;
+  const { login, register } = userContext;
 
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
-      await loginWithGoogle();
+      await signInWithGoogle();
     } catch (error) {
       toast.error(error.message);
     } finally {
