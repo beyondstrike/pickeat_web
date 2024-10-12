@@ -25,7 +25,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
 
   if (!dataContext || !userContext || !modalContext) return null;
 
-  const { getStadiumPickupPoints, currencies } = dataContext;
+  const { getStadiumPickupPoints, currencies, getStadiumById } = dataContext;
   const { cart, clearCart, getPaymentIntent, getMyCoupons, user } = userContext;
   const { openModal, closeModal } = modalContext;
 
@@ -36,6 +36,8 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
   const [sector, setSector] = useState("");
   const [seat, setSeat] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const [stadium, setStadium] = useState(null);
 
   const loginUser = () => {
     const [modalId, updateModalContent] = openModal(<LoginPopup />);
@@ -155,7 +157,12 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
     const fetchPickupPoints = async () => {
       setLoading(true);
       try {
-        const points = await getStadiumPickupPoints(stadiumId);
+        const [points, stadium] = await Promise.all([
+          getStadiumPickupPoints(stadiumId),
+          getStadiumById(stadiumId),
+        ]);
+
+        setStadium(stadium);
         setPickupPoints(points);
       } catch (error) {
         console.error("Errore nel recupero dei punti di ritiro:", error);
@@ -301,7 +308,7 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           </div>
           <div className="py-0">
             <h3 className="text-sm font-semibold text-center">
-              Ritiro al Bar - lato destro
+              {stadium?.pickupText ?? "ritiro al bar"}
             </h3>
           </div>
         </>

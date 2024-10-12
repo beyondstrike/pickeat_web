@@ -49,6 +49,18 @@ const DataContext = ({ children }) => {
     }
   };
 
+  const getStadiumById = async (id) => {
+    try {
+      const {
+        data: { stadium },
+      } = await api.get(`/stadiums/${id}`);
+      return stadium;
+    } catch (error) {
+      console.error(`Error getting stadium by ID: ${error.message}`);
+      return null;
+    }
+  };
+
   // restuarants
   const getAvailableSlots = async (restaurantIDs) => {
     try {
@@ -64,6 +76,7 @@ const DataContext = ({ children }) => {
     getMenuItems,
     getStadium,
     getStadiumPickupPoints,
+    getStadiumById,
     // restuarants
     getAvailableSlots,
     // currencies
