@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
-import { signInWithGoogle } from "@firebase";
 
 const Login = () => {
   const [firstName, setFirstName] = useState("");
@@ -16,15 +15,16 @@ const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const userContext = useUser();
   if (!userContext) return null;
-  const { login, register } = userContext;
+  const { login, register, loginWithGoogle, user } = userContext;
 
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
-      await signInWithGoogle();
+      await loginWithGoogle();
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -51,6 +51,12 @@ const Login = () => {
       setEmail(searchParams.get("email"));
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (user?.userID) {
+      router.push("/");
+    }
+  }, [user]);
 
   return (
     <div className="flex rounded-[24px] overflow-hidden shadow-lg max-w-xs md:max-w-5xl w-full">
