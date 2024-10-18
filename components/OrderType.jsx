@@ -161,7 +161,6 @@ const OrderType = ({ onBack, stadiumId, timeSlot }) => {
           getStadiumPickupPoints(stadiumId),
           getStadiumById(stadiumId),
         ]);
-
         setStadium(stadium);
         setPickupPoints(points);
       } catch (error) {
