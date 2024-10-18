@@ -77,43 +77,46 @@ const Orders = () => {
               </div>
             )}
           </div>
-          {order.items.map((item, index) => (
-            <div
-              key={index}
-              className={`flex space-x-3 mt-4 pb-4 ${
-                index === order.items.length - 1
-                  ? ""
-                  : "border-b border-black/10"
-              }`}
-            >
-              <div className="border rounded-lg border-black/10 flex items-center justify-center px-2 py-4 bg-white">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="h-20 w-20 rounded-lg"
-                />
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold truncate">{item.title}</p>
-                <p className="my-1 text-base font-bold text-main-1">
-                  {currencies[item.currency]}
-                  {item.price}
-                </p>
-                <div className="flex flex-row">
-                  <div className="flex-1">
-                    {item.extras.map((extra) => (
-                      <p key={extra._id} className="text-xs text-black/70">
-                        • {extra.title}
-                      </p>
-                    ))}
-                  </div>
-                  <p className="text-xs font-semibold mt-auto">
-                    Quantità: {item.quantity}
+          {order.items.map((item, index) => {
+            return (
+              <div
+                key={index}
+                className={`flex space-x-3 mt-4 pb-4 ${
+                  index === order.items.length - 1
+                    ? ""
+                    : "border-b border-black/10"
+                }`}
+              >
+                <div className="border rounded-lg border-black/10 flex items-center justify-center px-2 py-4 bg-white">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-20 w-20 rounded-lg"
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold truncate">{item.title}</p>
+                  <p className="my-1 text-base font-bold text-main-1">
+                    {`X ${item.quantity} ${currencies[item.currency]} ${
+                      item.price * item.quantity
+                    }`}
                   </p>
+                  <div className="flex flex-row">
+                    <div className="flex-1">
+                      {item.extras.map((extra) => (
+                        <p key={extra._id} className="text-xs text-black/70">
+                          • {extra.title}
+                        </p>
+                      ))}
+                    </div>
+                    <p className="text-xs font-semibold mt-auto">
+                      Quantità: {item.quantity}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ))}
     </div>
