@@ -39,7 +39,7 @@ const OrderMenu = ({ modalId, item }) => {
   };
 
   const [orderNumber, setOrderNumber] = useState(1);
-  const [additions, setAdditions] = useState([]);
+  const [additions, setAdditions] = useState(item.multiOptions ? [] : [0]);
 
   useEffect(() => {
     const totalAdditions = additions.reduce(
