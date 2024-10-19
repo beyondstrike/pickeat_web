@@ -42,10 +42,8 @@ const OrderMenu = ({ modalId, item }) => {
   const [additions, setAdditions] = useState(item.multiOptions ? [] : [0]);
 
   useEffect(() => {
-    const totalAdditions = additions.reduce(
-      (acc, index) => acc + item.extras[index].price,
-      0
-    );
+    const totalAdditions =
+      additions.reduce((acc, index) => acc + item.extras[index]?.price, 0) || 0;
     setTotalPrice(((item.price + totalAdditions) * orderNumber).toFixed(2));
   }, [orderNumber, additions]);
 
