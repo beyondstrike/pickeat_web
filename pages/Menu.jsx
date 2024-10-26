@@ -89,9 +89,7 @@ const Menu = ({ stadiumID }) => {
                 <div className="h-full flex flex-col flex-1">
                   <h3 className="font-semibold text-left">{menu.title}</h3>
                   <p className="text-black/70 text-sm mt-2 mb-10">
-                    {menu.description.length > 120
-                      ? `${menu.description.substring(0, 50)}...`
-                      : menu.description}
+                    {menu.description}
                   </p>
                   <div className="flex items-center justify-between w-full">
                     <div className="font-bold text-2xl md:text-lg">

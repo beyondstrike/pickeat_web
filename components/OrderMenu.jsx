@@ -117,50 +117,52 @@ const OrderMenu = ({ modalId, item }) => {
         </div>
         Informazioni su Allergeni e Valori Nutrizionali
       </button>
-      <div className="flex flex-col py-4">
-        <h2 className="font-semibold">Extra</h2>
-        <p className="text-black/70 whitespace-pre-line">
-          {item.extras.map((extra, index) => {
-            const multiOptions = item?.multiOptions;
-            return (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex flex-1">
-                  <input
-                    type={multiOptions ? "checkbox" : "radio"}
-                    id={`extra-${index}`}
-                    checked={additions.includes(index)} // Control the checked status
-                    onChange={() => {
-                      if (multiOptions) {
-                        setAdditions((prev) =>
-                          prev.includes(index)
-                            ? prev.filter((i) => i !== index)
-                            : [...prev, index]
-                        );
-                      } else {
-                        setAdditions([index]);
-                      }
-                    }}
-                  />
-                  <label
-                    className="ml-2 text-black/70 flex-1"
-                    htmlFor={`extra-${index}`}
-                  >
-                    {extra.title}
-                  </label>
-                </div>
-                {extra.price > 0 ? (
-                  <div className="flex items-center space-x-2">
-                    <p className="text-[16px] font-bold">
-                      {currencies[item.currency]}
-                      {extra.price.toFixed(2)}
-                    </p>
+      {item?.extras && item?.extra?.length > 0 && (
+        <div className="flex flex-col py-4">
+          <h2 className="font-semibold">Extra</h2>
+          <p className="text-black/70 whitespace-pre-line">
+            {item.extras.map((extra, index) => {
+              const multiOptions = item?.multiOptions;
+              return (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex flex-1">
+                    <input
+                      type={multiOptions ? "checkbox" : "radio"}
+                      id={`extra-${index}`}
+                      checked={additions.includes(index)} // Control the checked status
+                      onChange={() => {
+                        if (multiOptions) {
+                          setAdditions((prev) =>
+                            prev.includes(index)
+                              ? prev.filter((i) => i !== index)
+                              : [...prev, index]
+                          );
+                        } else {
+                          setAdditions([index]);
+                        }
+                      }}
+                    />
+                    <label
+                      className="ml-2 text-black/70 flex-1"
+                      htmlFor={`extra-${index}`}
+                    >
+                      {extra.title}
+                    </label>
                   </div>
-                ) : null}
-              </div>
-            );
-          })}
-        </p>
-      </div>
+                  {extra.price > 0 ? (
+                    <div className="flex items-center space-x-2">
+                      <p className="text-[16px] font-bold">
+                        {currencies[item.currency]}
+                        {extra.price.toFixed(2)}
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </p>
+        </div>
+      )}
       <div className="flex flex-col py-4">
         <h2 className="font-semibold">Note</h2>
         <textarea
