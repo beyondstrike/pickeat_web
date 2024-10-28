@@ -25,7 +25,9 @@ const OrderMenu = ({ modalId, item }) => {
       await addToCart({
         ...item,
         amount: orderNumber,
-        extras: additions.map((index) => item.extras[index]),
+        extras: additions
+          .filter((index) => item.extras[index] !== undefined) // Filter out invalid indices
+          .map((index) => item.extras[index]), // Map only valid extras
         totalPrice: parseFloat(totalPrice),
         notes,
       });
@@ -46,6 +48,8 @@ const OrderMenu = ({ modalId, item }) => {
       additions.reduce((acc, index) => acc + item.extras[index]?.price, 0) || 0;
     setTotalPrice(((item.price + totalAdditions) * orderNumber).toFixed(2));
   }, [orderNumber, additions]);
+
+  console.log(item);
 
   return (
     <div className="bg-white border border-black/20 rounded-2xl h-full w-full max-h-screen overflow-auto py-10 px-5">
@@ -117,7 +121,7 @@ const OrderMenu = ({ modalId, item }) => {
         </div>
         Informazioni su Allergeni e Valori Nutrizionali
       </button>
-      {item?.extras && item?.extra?.length > 0 && (
+      {item?.extras && item?.extras?.length > 0 && (
         <div className="flex flex-col py-4">
           <h2 className="font-semibold">Extra</h2>
           <p className="text-black/70 whitespace-pre-line">
