@@ -4,7 +4,7 @@ import { useUser } from "../context/UserContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const Login = ({ loginWithPopup }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -53,7 +53,7 @@ const Login = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (user?.userID) {
+    if (user?.userID && !loginWithPopup) {
       router.push("/");
     }
   }, [user]);

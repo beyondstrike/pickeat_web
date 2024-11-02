@@ -30,7 +30,7 @@ const LoginPopup = ({ modalId }) => {
       >
         <Image src="/icons/close.png" alt="Chiudi" width={15} height={15} />
       </button>
-      <Login />
+      <Login loginWithPopup={true} />
     </div>
   );
 };

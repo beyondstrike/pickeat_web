@@ -75,7 +75,7 @@ const Stadium = () => {
               <Link
                 key={stadium._id}
                 href={`/menu/${stadium._id}`}
-                className="relative w-full rounded-2xl shadow-sm shadow-black bg-white mb-2 mx-1"
+                className="relative w-full rounded-2xl shadow-sm shadow-black bg-white mb-2"
               >
                 <div className="w-full h-[70%]">
                   <img
