@@ -49,6 +49,7 @@ export const metadata = {
       "Experience convenience with PickEat. Browse menus, order food, and get it delivered to your seat or ready for pickup—all while enjoying the game.",
     image: "https://pickeat.com/media/background.webp",
   },
+  colorScheme: "light only",
 };
 
 export default function RootLayout({ children }) {
@@ -83,28 +84,24 @@ export default function RootLayout({ children }) {
           />
         </noscript>
         <script
-          type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "Request Hub - Your Marketplace for Personalized Content Requests",
-              url: "https://requesthub.net",
-              description:
-                "Get what you need on RequestHub, the unique online marketplace. Post personalized requests, including 18+ content, and receive offers from responsive providers.",
-              publisher: {
-                "@type": "Organization",
-                name: "Request Hub",
-                logo: {
-                  "@type": "ImageObject",
-                  url: "https://requesthub.net/media/m_logo.png",
-                },
-              },
-            }),
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-MKGFP49N');`,
           }}
         />
       </head>
       <body suppressHydrationWarning={true}>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MKGFP49N"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
         <ModalContext>
           <UserContext>
             <DataContext>
